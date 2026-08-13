@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: headerfiles}">
+</head>
+<body>
+<div class="row" th:fragment="header1">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom transparent">
+        <div class="col-md-3 mb-2 mb-md-0 transparent">
+            <img src="/images/northwind.png" alt="Northwind traders" class="img-fluid" height="100" width="100">
+        </div>
+        <ul class="nav col-6 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="#" class="nav-link px-2">Northwind traders</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <a class="btn btn-primary" role="button" th:href="@{/}">Inicio</a>
+            <a class="btn btn-primary" role="button" th:href="@{/categories}">Categorías</a>
+            <a th:if="${btnNew}" class="btn btn-primary" role="button" th:href="@{/categories/new}">Nuevo</a>
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

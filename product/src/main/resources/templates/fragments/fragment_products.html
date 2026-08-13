@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:fragment="headerfiles">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main2.css}" type="text/css">
+    <meta charset="UTF-8">
+    <title>Mi tiendita - Productos</title>
+</head>
+<body>
+<!-- Cities overview -->
+<div class="row w-50 content" th:fragment="products" (products)>
+    <h3>Ciudades</h3>
+    <table class="datatable"
+           th:if="${#lists.size(products)}>=1">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Presentación</th>
+            <th>Precio</th>
+            <th>Existencia</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.productName}">Text ...</td>
+            <td th:text="${product.unitPriceWithTax}">Text ...</td>
+            <td th:text="${product.quantityPerUnit}">Text ...</td>
+            <td th:text="${product.unitsInStock}">Text ...</td>
+            <td><a th:href="@{'/product/edit/' + ${product.productId}}"><img src="/image/edit.png"  class="img-fluid img-thumbnail"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

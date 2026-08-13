@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head th:replace="~{fragments/headerconfig.html :: headerfiles}">
+</head>
+<body>
+    <!-- Listado de categorías-->
+    <div class="container transparent">
+        <div class="row w-50 content" th:fragment="categories" (categories)>
+            <h3>Listado de categorías</h3>
+            <table class="datatable"
+                   th:if="${#lists.size(categories)}>=1">
+                <thead>
+                    <tr>
+                        <th class="blue rounded-start" >Nombre</th>
+                        <th class="blue">I.V.A.</th>
+                        <th class="blue">Descripción</th>
+                        <th class="blue">Imagen</th>
+                        <th class="blue rounded-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cat : ${categories}">
+                        <td class="green-squared rounded-start" th:text="${cat.categoryName}">Onions</td>
+                        <td class="green-squared" th:text="${cat.tax}">2.41</td>
+                        <td class="green-squared" th:text="${cat.description}">yes</td>
+                        <td><img th:src="@{'data:image/png;base64,' + ${cat.picture}}"></td>
+                        <td  class="green-squared rounded-end"><a th:href="@{'/categories/edit/' + ${cat.categoryId}}"><img src="/images/edit.png"  class="img-fluid img-thumbnail"></a></td>
+                    </tr>
+               </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Formulario de categorías -->
+    <div  class="row w-50 content" th:fragment="category">
+        <form th:action="@{/categories}" th:object="${category}" method="post">
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="categoryName" class="form-label">Nombre de la categoría</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="categoryName" th:field="*{categoryName}" aria-describedby="categoryNameHelp">
+                </div>
+                <div class="col-auto">
+                    <span id="categoryNameHelp" class="form-text">El nombre de la categoría es obligatorio y debe ser único.</span>
+                </div>
+            </div>
+            <br/>
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="description" class="form-label">Descripción</label>
+                </div>
+                <div class="col-auto">
+                    <textarea class="form-control" id="description" th:field="*{description}" aria-describedby="brandHelp"></textarea>
+                </div>
+                <div class="col-auto">
+                    <span id="descriptionHelp" class="form-text"></span>
+                </div>
+            </div>
+            <br/>
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="type" class="form-label">Tasa I.V.A</label>
+                </div>
+                <div class="col-auto">
+                    <input type="number" min="0.00" max="4.00" step=".01" class="form-control" id="tax" th:field="*{tax}" aria-describedby="taxHelp">
+                </div>
+                <div class="col-auto">
+                    <span id="typeHelp" class="form-text"></span>
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group mt-3">
+                <label class="mr-2">Fotografía de la categoría:</label>
+                <input type="file" id="pictureFile" name="file" accept=".png">
+                <br/>
+                <img id="picture" th:src="@{'data:image/png;base64,' + ${category.picture}}" th:width="250"/>
+            </div>
+
+            <div hidden>
+                <div class="col-auto">
+                    <label for="categorypicture" class="form-label"Picture:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="categoryPicture" th:field="${category.picture}" aria-describedby="imageHelp" placeholder="Foto">
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="categoryId" th:field="*{categoryId}" aria-describedby="categoryIdHelp">
+                </div>
+            </div>
+
+            <br/>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a class="btn btn-secondary" role="button" th:href="@{'/categories'}">Cancelar</a>
+            </div>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const inputElement = document.getElementById('pictureFile');
+            const img = document.getElementById('picture');
+            const raw = document.getElementById('categoryPicture');
+
+             function handleFile() {
+                // read the contents of the file
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.addEventListener('load', event => {
+                    img.setAttribute('src', event.target.result);
+                    //raw.value = btoa(unescape(encodeURIComponent(event.target.result)));
+                    raw.value = img.getAttribute('src').substring(22);
+                    img.setAttribute('width', '250');
+              });
+                reader.readAsDataURL(file);
+            }
+
+            inputElement.addEventListener('change', handleFile, false);
+
+
+             /*]]>*/
+        </script>
+    </div>
+
+</body>
+</html>
